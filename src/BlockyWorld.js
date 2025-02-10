@@ -2,18 +2,23 @@
 // Vertex shader program
 var VSHADER_SOURCE = `
   attribute vec4 a_Position;
+  attribute vec2 a_UV;
+  varying vec2 v_UV;
   uniform mat4 u_ModelMatrix;
   uniform mat4 u_GlobalRotateMatrix;
   void main() {
     gl_Position = u_GlobalRotateMatrix * u_ModelMatrix * a_Position;
+    v_UV = a_UV;
   }`;
 
 // Fragment shader program
 var FSHADER_SOURCE = `
   precision mediump float;
   uniform vec4 u_FragColor;
+  varying vec2 v_UV;
   void main() {
     gl_FragColor = u_FragColor;
+    gl_FragColor = vec4(v_UV, 1.0, 1.0);
   }`;
 
 const POINT = 0;
@@ -82,6 +87,11 @@ function connectVariablesToGLSL() {
         return;
     }
 
+    a_UV = gl.getAttribLocation(gl.program, 'a_UV');
+    if(a_UV < 0){
+        console.log("Failed to get the storage location of a_UV");
+        return;
+    }
     // Get the storage location of u_FragColor
     u_FragColor = gl.getUniformLocation(gl.program, "u_FragColor");
     if (!u_FragColor) {
@@ -310,8 +320,8 @@ function setupHTMLElements(){
     document.getElementById("legSlider").addEventListener("mousemove", function () { g_legAngle = this.value; renderAllShapes(); } );
 
     // Buttons 
-    document.getElementById("animationBttn").onclick = function () { g_animationOn = true };
-    document.getElementById("animationOffBttn").onclick = function () { g_animationOn = false };
+    // document.getElementById("animationBttn").onclick = function () { g_animationOn = true };
+    // document.getElementById("animationOffBttn").onclick = function () { g_animationOn = false };
 }
 
 let g_startTime = performance.now()/1000.0;
@@ -339,5 +349,5 @@ function main() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     renderAllShapes();
-    requestAnimationFrame(tick);
+    //requestAnimationFrame(tick);
 }
