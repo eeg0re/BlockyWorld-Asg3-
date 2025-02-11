@@ -290,8 +290,8 @@ function moveCamera(direction){
     let d = new Vector3();
     d = atVector.sub(eyeVector);
     d.normalize();
-    let left = Vector3.cross(d, upVector);
-    left.normalize();
+    let right = Vector3.cross(d, upVector);
+    right.normalize();
     switch(direction){
         case "forward":
             eyeVector = eyeVector.add(d);
@@ -302,34 +302,35 @@ function moveCamera(direction){
             atVector = atVector.sub(d);
             break;
         case "left":
-            eyeVector = eyeVector.add(left);
-            atVector = atVector.add(left);
+            eyeVector = eyeVector.sub(right);
+            atVector = atVector.sub(right);
             break;
         case "right":
-            eyeVector = eyeVector.sub(left);
-            atVector = atVector.sub(left);
+            eyeVector = eyeVector.add(right);
+            atVector = atVector.add(right);
             break;
     }
-    renderAllShapes();
+    // eyeVector = new Vector3([eyeVector.elements[0], eyeVector.elements[1], eyeVector.elements[2]]);
+    // atVector = new Vector3([atVector.elements[0], atVector.elements[1], atVector.elements[2]]);
 }
 
 function keyDown(ev){
     let key = ev.keyCode;
     switch(key){
         case 87: // w
-            console.log("w");
+            //console.log("w");
             moveCamera("forward");
             break;
         case 65: // a
-            console.log("a");
+            //console.log("a");
             moveCamera("left");
             break;
         case 83: // s
-            console.log("s");
+            //console.log("s");
             moveCamera("back");
             break;
         case 68: // d
-            console.log("d");
+            //console.log("d");
             moveCamera("right");
             break;
     }
