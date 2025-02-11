@@ -64,6 +64,11 @@ let g_lowerArmAngle = 0.0;
 let g_animationOn = false;
 let g_legAngle = 0.0;
 
+// camera variables
+let g_eye = [0, 0, 3];
+let g_at = [0, 0, -100];
+let g_up = [0, 1, 0];
+
 // colors for gengar
 let purple = [0.314, 0.0, 0.78, 1.0];
 let darkPurple = [0.314 * 0.8, 0.0 * 0.8, 0.78 *0.8, 1.0];
@@ -255,8 +260,12 @@ function renderAllShapes() {
     //drawTriangle3D([-1.0,0.0,0.0, -0.5, -1.0, 0.0, 0.0, 0.0, 0.0]);
 
     let projMat = new Matrix4();
+    projMat.setPerspective(60, canvas.width/canvas.height, 0.1, 100);
     gl.uniformMatrix4fv(u_ProjectionMatrix, false, projMat.elements);
+
     let viewMat = new Matrix4();
+    viewMat.setLookAt(g_eye[0], g_eye[1], g_eye[2], g_at[0], g_at[1], g_at[2], g_up[0], g_up[1], g_up[2]);    // (eye, at, up)
+                                                  // eye_x + moves right, eye_z + moves back
     gl.uniformMatrix4fv(u_ViewMatrix, false, viewMat.elements);
 
     // pass the matrix to rotate the shape
