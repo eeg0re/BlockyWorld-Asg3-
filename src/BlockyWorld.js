@@ -7,11 +7,11 @@ var VSHADER_SOURCE = `
   varying vec2 v_UV;
   uniform mat4 u_ModelMatrix;
   uniform mat4 u_GlobalRotateMatrix;
-  //uniform mat4 u_ViewMatrix;
-  //uniform mat4 u_ProjectionMatrix;
+  uniform mat4 u_ViewMatrix;
+  uniform mat4 u_ProjectionMatrix;
   void main() {
-    gl_Position = u_ModelMatrix * u_GlobalRotateMatrix * a_Position;
-    //gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_GlobalRotateMatrix * u_ModelMatrix * a_Position;
+    //gl_Position = u_ModelMatrix * u_GlobalRotateMatrix * a_Position;
+    gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_GlobalRotateMatrix * u_ModelMatrix * a_Position;
     v_UV = a_UV;
   }`;
 
@@ -47,8 +47,8 @@ let u_FragColor;
 let u_Size;
 let u_ModelMatrix;
 let u_GlobalRotateMatrix;
-// let u_ViewMatrix;
-// let u_ProjectionMatrix;
+let u_ViewMatrix;
+let u_ProjectionMatrix;
 let u_whichTexture;
 let u_sampler0;
 
@@ -128,17 +128,17 @@ function connectVariablesToGLSL() {
         return;
     }
 
-    // u_ViewMatrix = gl.getUniformLocation(gl.program, "u_ViewMatrix");
-    // if (!u_ViewMatrix){
-    //     console.log("Failed to get the storage location of u_ViewMatrix");
-    //     return;
-    // }
+    u_ViewMatrix = gl.getUniformLocation(gl.program, "u_ViewMatrix");
+    if (!u_ViewMatrix){
+        console.log("Failed to get the storage location of u_ViewMatrix");
+        return;
+    }
 
-    // u_ProjectionMatrix = gl.getUniformLocation(gl.program, "u_ProjectionMatrix");
-    // if (!u_ViewMatrix){
-    //     console.log("Failed to get the storage location of u_ProjectionMatrix");
-    //     return;
-    // }
+    u_ProjectionMatrix = gl.getUniformLocation(gl.program, "u_ProjectionMatrix");
+    if (!u_ViewMatrix){
+        console.log("Failed to get the storage location of u_ProjectionMatrix");
+        return;
+    }
 
     let identityM = new Matrix4();
     gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
@@ -254,6 +254,11 @@ function renderAllShapes() {
 
     //drawTriangle3D([-1.0,0.0,0.0, -0.5, -1.0, 0.0, 0.0, 0.0, 0.0]);
 
+    let projMat = new Matrix4();
+    gl.uniformMatrix4fv(u_ProjectionMatrix, false, projMat.elements);
+    let viewMat = new Matrix4();
+    gl.uniformMatrix4fv(u_ViewMatrix, false, viewMat.elements);
+
     // pass the matrix to rotate the shape
     let globalRotMat = new Matrix4();
     globalRotMat.rotate(g_globalAngleX, 0, 1, 0);
@@ -265,6 +270,7 @@ function renderAllShapes() {
     body.matrix.translate(-0.4, -0.5, 0.0);
     let bodyMatrix = new Matrix4(body.matrix);
     body.matrix.scale(0.75, 0.75, 0.75);
+    body.textureNum = 0;
     body.render();
 
     let rightEar = new Pyramid();
