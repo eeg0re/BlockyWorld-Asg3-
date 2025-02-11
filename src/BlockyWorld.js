@@ -65,9 +65,12 @@ let g_animationOn = false;
 let g_legAngle = 0.0;
 
 // camera variables
-let g_eye = [0, 0, 3];
-let g_at = [0, 0, -100];
-let g_up = [0, 1, 0];
+let eyeVector = new Vector3([0, 0, 3]);
+let atVector = new Vector3([0, 0, -100]);
+let upVector = new Vector3([0, 1, 0]);
+//let g_eye = [0, 0, 3];
+//let g_at = [0, 0, -100];
+//let g_up = [0, 1, 0];
 
 // colors for gengar
 let purple = [0.314, 0.0, 0.78, 1.0];
@@ -140,7 +143,7 @@ function connectVariablesToGLSL() {
     }
 
     u_ProjectionMatrix = gl.getUniformLocation(gl.program, "u_ProjectionMatrix");
-    if (!u_ViewMatrix){
+    if (!u_ProjectionMatrix){
         console.log("Failed to get the storage location of u_ProjectionMatrix");
         return;
     }
@@ -245,6 +248,96 @@ function updateAnimationAngles(){
     }
 }
 
+/* 
+--------- movement psuedocode ------------
+--- up will have to be taken into account if we give user control of up/down camera movement
+
+    moveForward - 'W' {
+        let d = new Vector3();
+        d = at.sub(eye);
+        d.normalize();
+        eye = eye.add(d);
+        at = at.add(d);
+    }
+    // back is same as forward but subtract
+    
+    moveLeft - 'A' {
+        let d = new Vector3();
+        d = at.sub(eye);
+        d.normalize();
+        let left = d.cross(up);
+        left.normalize();
+        eye = eye.add(left);
+        at = at.add(left);
+    }
+
+    ---- rotate camera ----
+    rotate - {
+        let d = new Vector3();
+        d = at.sub(eye);
+        d.normalize();
+        let r = sqrt (d.x ^2 + d.z ^2);
+        let theta = atan2(d.z, d.x);
+        theta += 0.1; // probably in radians, so adjust accordingly 
+        let newx = r * cos(theta);
+        let newz = r * sin(theta);
+        d = new Vector3([newx, d.y, newz]);
+        at = eye.add(d);
+    }
+*/
+
+function moveCamera(direction){
+    let d = new Vector3();
+    d = atVector.sub(eyeVector);
+    d.normalize();
+    let left = Vector3.cross(d, upVector);
+    left.normalize();
+    switch(direction){
+        case "forward":
+            eyeVector = eyeVector.add(d);
+            atVector = atVector.add(d);
+            break;
+        case "back":
+            eyeVector = eyeVector.sub(d);
+            atVector = atVector.sub(d);
+            break;
+        case "left":
+            eyeVector = eyeVector.add(left);
+            atVector = atVector.add(left);
+            break;
+        case "right":
+            eyeVector = eyeVector.sub(left);
+            atVector = atVector.sub(left);
+            break;
+    }
+    renderAllShapes();
+}
+
+function keyDown(ev){
+    let key = ev.keyCode;
+    switch(key){
+        case 87: // w
+            console.log("w");
+            moveCamera("forward");
+            break;
+        case 65: // a
+            console.log("a");
+            moveCamera("left");
+            break;
+        case 83: // s
+            console.log("s");
+            moveCamera("back");
+            break;
+        case 68: // d
+            console.log("d");
+            moveCamera("right");
+            break;
+    }
+    renderAllShapes();
+    //console.log(ev.keyCode);
+}
+
+
 function renderAllShapes() {
     // Clear <canvas>
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -264,7 +357,7 @@ function renderAllShapes() {
     gl.uniformMatrix4fv(u_ProjectionMatrix, false, projMat.elements);
 
     let viewMat = new Matrix4();
-    viewMat.setLookAt(g_eye[0], g_eye[1], g_eye[2], g_at[0], g_at[1], g_at[2], g_up[0], g_up[1], g_up[2]);    // (eye, at, up)
+    viewMat.setLookAt(eyeVector.elements[0], eyeVector.elements[1], eyeVector.elements[2], atVector.elements[0], atVector.elements[1], atVector.elements[2], upVector.elements[0], upVector.elements[1], upVector.elements[2]);    // (eye, at, up)
                                                   // eye_x + moves right, eye_z + moves back
     gl.uniformMatrix4fv(u_ViewMatrix, false, viewMat.elements);
 
@@ -452,8 +545,7 @@ function setupHTMLElements(){
     document.getElementById("legSlider").addEventListener("mousemove", function () { g_legAngle = this.value; renderAllShapes(); } );
 
     // Buttons 
-    // document.getElementById("animationBttn").onclick = function () { g_animationOn = true };
-    // document.getElementById("animationOffBttn").onclick = function () { g_animationOn = false };
+
 }
 
 let g_startTime = performance.now()/1000.0;
@@ -461,7 +553,7 @@ let g_seconds = performance.now()/1000.0 - g_startTime;
 
 function tick(){
     g_seconds = performance.now()/1000.0 - g_startTime;
-    console.log(g_seconds);
+    //console.log(g_seconds);
     updateAnimationAngles();
 
     renderAllShapes();
@@ -482,6 +574,8 @@ function main() {
     // Clear <canvas>
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+    document.onkeydown = keyDown;
+
     renderAllShapes();
-    //requestAnimationFrame(tick);
+    requestAnimationFrame(tick);
 }
