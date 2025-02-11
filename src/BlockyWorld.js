@@ -1,13 +1,17 @@
 // ColoredPoint.js (c) 2012 matsuda
 // Vertex shader program
 var VSHADER_SOURCE = `
+  precision mediump float;
   attribute vec4 a_Position;
   attribute vec2 a_UV;
   varying vec2 v_UV;
   uniform mat4 u_ModelMatrix;
   uniform mat4 u_GlobalRotateMatrix;
+  //uniform mat4 u_ViewMatrix;
+  //uniform mat4 u_ProjectionMatrix;
   void main() {
-    gl_Position = u_GlobalRotateMatrix * u_ModelMatrix * a_Position;
+    gl_Position = u_ModelMatrix * u_GlobalRotateMatrix * a_Position;
+    //gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_GlobalRotateMatrix * u_ModelMatrix * a_Position;
     v_UV = a_UV;
   }`;
 
@@ -16,9 +20,18 @@ var FSHADER_SOURCE = `
   precision mediump float;
   uniform vec4 u_FragColor;
   varying vec2 v_UV;
+  uniform sampler2D u_sampler0;
+  uniform int u_whichTexture;
   void main() {
-    gl_FragColor = u_FragColor;
-    gl_FragColor = vec4(v_UV, 1.0, 1.0);
+    if (u_whichTexture == -2){
+        gl_FragColor = u_FragColor;
+    } else if (u_whichTexture == -1){           // UV debug color
+        gl_FragColor = vec4(v_UV, 1.0, 1.0);
+    } else if (u_whichTexture == 0){            // use texture 0
+        gl_FragColor = texture2D(u_sampler0, v_UV);
+    } else {                                    // error, use red
+        gl_FragColor = vec4(1.0, 0.2, 0.2, 1.0);
+    }
   }`;
 
 const POINT = 0;
@@ -34,6 +47,10 @@ let u_FragColor;
 let u_Size;
 let u_ModelMatrix;
 let u_GlobalRotateMatrix;
+// let u_ViewMatrix;
+// let u_ProjectionMatrix;
+let u_whichTexture;
+let u_sampler0;
 
 // UI variables
 let g_selectedSize = 10; 
@@ -106,13 +123,113 @@ function connectVariablesToGLSL() {
     }
 
     u_GlobalRotateMatrix = gl.getUniformLocation(gl.program, "u_GlobalRotateMatrix");
-    if(!u_GlobalRotateMatrix){
+    if (!u_GlobalRotateMatrix){
         console.log("Failed to get the storage location of u_GlobalRotateMatrix");
         return;
     }
 
+    // u_ViewMatrix = gl.getUniformLocation(gl.program, "u_ViewMatrix");
+    // if (!u_ViewMatrix){
+    //     console.log("Failed to get the storage location of u_ViewMatrix");
+    //     return;
+    // }
+
+    // u_ProjectionMatrix = gl.getUniformLocation(gl.program, "u_ProjectionMatrix");
+    // if (!u_ViewMatrix){
+    //     console.log("Failed to get the storage location of u_ProjectionMatrix");
+    //     return;
+    // }
+
     let identityM = new Matrix4();
     gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
+
+    u_sampler0 = gl.getUniformLocation(gl.program, 'u_sampler0');
+    if(!u_sampler0){
+        console.log("Failed to get the storage location of u_sampler0");
+        return false;
+    }
+
+    u_whichTexture = gl.getUniformLocation(gl.program, 'u_whichTexture');
+    if(!u_whichTexture){
+        console.log("Failed to get the storage location of u_whichTexture");
+        return false;
+    }
+}
+
+function initTextures(numTexture, imgSrc){
+    // change this function and next function to work with other textures
+
+    let image = new Image();
+    if(!image){
+        console.log("Failed to create the image object");
+        return false;
+    }
+
+    image.onload = () => { sendImageToTexture(image, numTexture); };
+    image.src = imgSrc;
+
+    return true;
+}
+
+function sendImageToTexture(image, numTexture){
+    let texture = gl.createTexture();                                           // create a texture object
+    if(!texture){
+        console.log("Failed to create the texture object");
+        return false;
+    }
+
+    let samplerVar;
+    let glTex;
+    switch(numTexture){
+        case 0:
+            samplerVar = u_sampler0;
+            glTex = gl.TEXTURE0;
+            break;
+        case 1:
+            samplerVar = u_sampler1;
+            glTex = gl.TEXTURE1;
+            break;
+        case 2:
+            samplerVar = u_sampler2;
+            glTex = gl.TEXTURE2;
+            break;
+        case 3:
+            samplerVar = u_sampler3;
+            glTex = gl.TEXTURE3;
+            break;
+        case 4:
+            samplerVar = u_sampler4;
+            glTex = gl.TEXTURE4;
+            break;
+        case 5:
+            samplerVar = u_sampler5;
+            glTex = gl.TEXTURE5;
+            break;
+        case 6:
+            samplerVar = u_sampler6;
+            glTex = gl.TEXTURE6;
+            break;
+        case 7:
+            samplerVar = u_sampler7;
+            glTex = gl.TEXTURE7;
+            break;
+        case 8:
+            samplerVar = u_sampler8;
+            glTex = gl.TEXTURE8;
+            break;
+        case 9:
+            samplerVar = u_sampler9;
+            glTex = gl.TEXTURE9;
+            break;
+    }
+
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);                                  // flip coordinates to match GL coords                              // flip image's y axis
+    gl.activeTexture(glTex);                                              // enable texture unit0
+    gl.bindTexture(gl.TEXTURE_2D, texture);                                     // bind texture object to target
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);          // set texture parameters
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);   // set texture image to the image we passed in 
+    gl.uniform1i(samplerVar, numTexture);                                                // pass the texure unit 0 to u_sampler0
+    console.log("texture loaded");
 }
 
 function updateAnimationAngles(){
@@ -341,6 +458,8 @@ function main() {
     setupWebGL();
     connectVariablesToGLSL();
     setupHTMLElements();
+
+    initTextures(0, 'sky.jpg');
 
     // Specify the color for clearing <canvas>
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
