@@ -248,25 +248,6 @@ function updateAnimationAngles(){
     }
 }
 
-/* 
---------- movement psuedocode ------------
---- up will have to be taken into account if we give user control of up/down camera movement
-
-    ---- rotate camera ----
-    rotate - {
-        let d = new Vector3();
-        d = at.sub(eye);
-        d.normalize();
-        let r = sqrt (d.x ^2 + d.z ^2);
-        let theta = atan2(d.z, d.x);
-        theta += 0.1; // probably in radians, so adjust accordingly 
-        let newx = r * cos(theta);
-        let newz = r * sin(theta);
-        d = new Vector3([newx, d.y, newz]);
-        at = eye.add(d);
-    }
-*/
-
 let camera = new Camera();
 function keyDown(ev){
     let key = ev.keyCode;
@@ -283,6 +264,16 @@ function keyDown(ev){
         case 68: // d
             camera.right();
             break;
+        case 69: //e
+            console.log("rotating right");
+            camera.rotateRight();
+            break;
+        case 81: //q
+            console.log("rotating left");
+            camera.rotateLeft();
+            break;
+        default:
+            console.log(ev.keyCode);
     }
     renderAllShapes();
     //console.log(ev.keyCode);
@@ -318,6 +309,21 @@ function renderAllShapes() {
     globalRotMat.rotate(g_globalAngleX, 0, 1, 0);
     globalRotMat.rotate(g_globalAngleY, 1, 0, 0);
     gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
+
+    let floor = new Cube();
+    floor.color = [0.0, 1.0, 0.0, 1.0];
+    floor.textureNum = -2;
+    floor.matrix.translate(0.0, -0.75, 0.0);
+    floor.matrix.scale(10, 0, 10);
+    floor.matrix.translate(-0.5, 0.0, -0.5);
+    floor.render();
+
+    let sky = new Cube();
+    sky.color = [0.1, 0.4, 1.0, 1.0];
+    sky.textureNum = -2;
+    sky.matrix.scale(50,50,50);
+    sky.matrix.translate(-0.5, -0.5, -0.5);
+    sky.render();
 
     let body = new Cube();
     body.color = purple;
