@@ -252,25 +252,6 @@ function updateAnimationAngles(){
 --------- movement psuedocode ------------
 --- up will have to be taken into account if we give user control of up/down camera movement
 
-    moveForward - 'W' {
-        let d = new Vector3();
-        d = at.sub(eye);
-        d.normalize();
-        eye = eye.add(d);
-        at = at.add(d);
-    }
-    // back is same as forward but subtract
-    
-    moveLeft - 'A' {
-        let d = new Vector3();
-        d = at.sub(eye);
-        d.normalize();
-        let left = d.cross(up);
-        left.normalize();
-        eye = eye.add(left);
-        at = at.add(left);
-    }
-
     ---- rotate camera ----
     rotate - {
         let d = new Vector3();
@@ -286,52 +267,21 @@ function updateAnimationAngles(){
     }
 */
 
-function moveCamera(direction){
-    let d = new Vector3();
-    d = atVector.sub(eyeVector);
-    d.normalize();
-    let right = Vector3.cross(d, upVector);
-    right.normalize();
-    switch(direction){
-        case "forward":
-            eyeVector = eyeVector.add(d);
-            atVector = atVector.add(d);
-            break;
-        case "back":
-            eyeVector = eyeVector.sub(d);
-            atVector = atVector.sub(d);
-            break;
-        case "left":
-            eyeVector = eyeVector.sub(right);
-            atVector = atVector.sub(right);
-            break;
-        case "right":
-            eyeVector = eyeVector.add(right);
-            atVector = atVector.add(right);
-            break;
-    }
-    // eyeVector = new Vector3([eyeVector.elements[0], eyeVector.elements[1], eyeVector.elements[2]]);
-    // atVector = new Vector3([atVector.elements[0], atVector.elements[1], atVector.elements[2]]);
-}
-
+let camera = new Camera();
 function keyDown(ev){
     let key = ev.keyCode;
     switch(key){
         case 87: // w
-            //console.log("w");
-            moveCamera("forward");
+            camera.forward();
             break;
         case 65: // a
-            //console.log("a");
-            moveCamera("left");
+            camera.left();
             break;
         case 83: // s
-            //console.log("s");
-            moveCamera("back");
+            camera.back();
             break;
         case 68: // d
-            //console.log("d");
-            moveCamera("right");
+            camera.right();
             break;
     }
     renderAllShapes();
@@ -358,8 +308,9 @@ function renderAllShapes() {
     gl.uniformMatrix4fv(u_ProjectionMatrix, false, projMat.elements);
 
     let viewMat = new Matrix4();
-    viewMat.setLookAt(eyeVector.elements[0], eyeVector.elements[1], eyeVector.elements[2], atVector.elements[0], atVector.elements[1], atVector.elements[2], upVector.elements[0], upVector.elements[1], upVector.elements[2]);    // (eye, at, up)
+    //viewMat.setLookAt(eyeVector.elements[0], eyeVector.elements[1], eyeVector.elements[2], atVector.elements[0], atVector.elements[1], atVector.elements[2], upVector.elements[0], upVector.elements[1], upVector.elements[2]);    // (eye, at, up)
                                                   // eye_x + moves right, eye_z + moves back
+    viewMat.setLookAt(camera.eye.elements[0], camera.eye.elements[1], camera.eye.elements[2], camera.at.elements[0], camera.at.elements[1], camera.at.elements[2], camera.up.elements[0],  camera.up.elements[1],  camera.up.elements[2]);
     gl.uniformMatrix4fv(u_ViewMatrix, false, viewMat.elements);
 
     // pass the matrix to rotate the shape
