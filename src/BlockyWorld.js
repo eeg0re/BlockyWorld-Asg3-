@@ -302,7 +302,7 @@ function drawMap(){
                     cube.color = [0.5, 0.5, 0.5, 1.0];
                     cube.textureNum = -2;
                     cube.matrix.translate(x-4, -0.75 + i, y-4);
-                    cube.render();
+                    cube.renderFast();
                 }
             }
         }
