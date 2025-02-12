@@ -68,9 +68,6 @@ let g_legAngle = 0.0;
 let eyeVector = new Vector3([0, 0, 3]);
 let atVector = new Vector3([0, 0, -100]);
 let upVector = new Vector3([0, 1, 0]);
-//let g_eye = [0, 0, 3];
-//let g_at = [0, 0, -100];
-//let g_up = [0, 1, 0];
 
 // colors for gengar
 let purple = [0.314, 0.0, 0.78, 1.0];
@@ -276,9 +273,41 @@ function keyDown(ev){
             console.log(ev.keyCode);
     }
     renderAllShapes();
-    //console.log(ev.keyCode);
 }
 
+let worldMap = [
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 2, 3, 0, 0, 1],
+    [1, 0, 0, 4, 1, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+]
+
+function drawMap(){
+    for (let x = 0; x < worldMap.length; x++){
+        for(let y = 0; y < worldMap[x].length; y++){
+            if(worldMap[x][y] == 1){
+                let cube = new Cube();
+                cube.color = [0.5, 0.5, 0.5, 1.0];
+                cube.textureNum = -2;
+                cube.matrix.translate(x-4, -0.75, y-4);
+                cube.render();
+            }
+            else if(worldMap[x][y] > 1){
+                for(let i = 0; i < worldMap[x][y]; i++){
+                    let cube = new Cube();
+                    cube.color = [0.5, 0.5, 0.5, 1.0];
+                    cube.textureNum = -2;
+                    cube.matrix.translate(x-4, -0.75 + i, y-4);
+                    cube.render();
+                }
+            }
+        }
+    }
+}
 
 function renderAllShapes() {
     // Clear <canvas>
@@ -324,6 +353,8 @@ function renderAllShapes() {
     sky.matrix.scale(50,50,50);
     sky.matrix.translate(-0.5, -0.5, -0.5);
     sky.render();
+
+    drawMap();
 
     let body = new Cube();
     body.color = purple;
