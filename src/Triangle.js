@@ -53,7 +53,12 @@ function drawTriangle(vertices){
 }
 
 function drawTriangle3D(vertices){
-    let n = vertices.length/3               // number of vertices
+    let n = vertices.length / 3; // number of vertices
+
+    if (n % 3 != 0) {
+        console.log("Not enough vertices to form a triangle");
+        return;
+    }
 
     // create buffer object
     let vertexBuffer = gl.createBuffer();
