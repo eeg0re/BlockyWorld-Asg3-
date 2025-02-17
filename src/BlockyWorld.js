@@ -278,8 +278,8 @@ function keyDown(ev){
 let worldMap = [
     [1, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 2, 3, 0, 0, 1],
-    [1, 0, 0, 4, 1, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 1],
@@ -294,7 +294,7 @@ function drawMap(){
                 cube.color = [0.5, 0.5, 0.5, 1.0];
                 cube.textureNum = -2;
                 cube.matrix.translate(x-4, -0.75, y-4);
-                cube.render();
+                cube.renderFast();
             }
             else if(worldMap[x][y] > 1){
                 for(let i = 0; i < worldMap[x][y]; i++){
@@ -317,7 +317,7 @@ function renderAllShapes() {
     // commented out temporarily -----------
     // let len = g_shapesList.length;
     // for(let i = 0; i < len; i++){
-    //     g_shapesList[i].render();
+    //     g_shapesList[i].renderFast();
     // }
     // -------------------------------------
 
@@ -345,14 +345,14 @@ function renderAllShapes() {
     floor.matrix.translate(0.0, -0.75, 0.0);
     floor.matrix.scale(10, 0, 10);
     floor.matrix.translate(-0.5, 0.0, -0.5);
-    floor.render();
+    floor.renderFast();
 
     let sky = new Cube();
     sky.color = [0.1, 0.4, 1.0, 1.0];
     sky.textureNum = -2;
     sky.matrix.scale(50,50,50);
     sky.matrix.translate(-0.5, -0.5, -0.5);
-    sky.render();
+    sky.renderFast();
 
     drawMap();
 
@@ -362,52 +362,52 @@ function renderAllShapes() {
     let bodyMatrix = new Matrix4(body.matrix);
     body.matrix.scale(0.75, 0.75, 0.75);
     body.textureNum = 0;
-    body.render();
+    body.renderFast();
 
-    let rightEar = new Pyramid();
-    rightEar.color = purple;
-    rightEar.matrix = new Matrix4(bodyMatrix);
-    rightEar.matrix.translate(0.0, 0.7, 0.4);
-    rightEar.matrix.rotate(45, 50, -40, 0);
-    rightEar.matrix.scale(0.5, 0.7, 0.5);
-    rightEar.render();
+    // let rightEar = new Pyramid();
+    // rightEar.color = purple;
+    // rightEar.matrix = new Matrix4(bodyMatrix);
+    // rightEar.matrix.translate(0.0, 0.7, 0.4);
+    // rightEar.matrix.rotate(45, 50, -40, 0);
+    // rightEar.matrix.scale(0.5, 0.7, 0.5);
+    // rightEar.renderFast();
 
-    let leftEar = new Pyramid();
-    leftEar.color = purple;
-    leftEar.matrix = new Matrix4(bodyMatrix);
-    leftEar.matrix.translate(0.3, 0.7, 0.6);
-    leftEar.matrix.rotate(55, 70, 30, 0);
-    leftEar.matrix.scale(0.5, 0.7, 0.5);
-    leftEar.render();
+    // let leftEar = new Pyramid();
+    // leftEar.color = purple;
+    // leftEar.matrix = new Matrix4(bodyMatrix);
+    // leftEar.matrix.translate(0.3, 0.7, 0.6);
+    // leftEar.matrix.rotate(55, 70, 30, 0);
+    // leftEar.matrix.scale(0.5, 0.7, 0.5);
+    // leftEar.renderFast();
 
-    let topSpike1 = new Pyramid();
-    topSpike1.color = darkPurple;
-    topSpike1.matrix = new Matrix4(bodyMatrix);
-    topSpike1.matrix.translate(0.15, 0.7, 0.5);
-    topSpike1.matrix.scale(0.25,0.15, 0.25);
-    topSpike1.render();
+    // let topSpike1 = new Pyramid();
+    // topSpike1.color = darkPurple;
+    // topSpike1.matrix = new Matrix4(bodyMatrix);
+    // topSpike1.matrix.translate(0.15, 0.7, 0.5);
+    // topSpike1.matrix.scale(0.25,0.15, 0.25);
+    // topSpike1.renderFast();
 
-    let topSpike2 = new Pyramid();
-    topSpike2.color = darkPurple;
-    topSpike2.matrix = new Matrix4(bodyMatrix);
-    topSpike2.matrix.translate(0.35, 0.7, 0.5);
-    topSpike2.matrix.scale(0.25,0.15, 0.25);
-    topSpike2.render();
+    // let topSpike2 = new Pyramid();
+    // topSpike2.color = darkPurple;
+    // topSpike2.matrix = new Matrix4(bodyMatrix);
+    // topSpike2.matrix.translate(0.35, 0.7, 0.5);
+    // topSpike2.matrix.scale(0.25,0.15, 0.25);
+    // topSpike2.renderFast();
 
-    let topSpike3 = new Pyramid();
-    topSpike3.color = darkPurple;
-    topSpike3.matrix = new Matrix4(bodyMatrix);
-    topSpike3.matrix.translate(0.25, 0.7, 0.4);
-    topSpike3.matrix.scale(0.25,0.15, 0.25);
-    topSpike3.render();
+    // let topSpike3 = new Pyramid();
+    // topSpike3.color = darkPurple;
+    // topSpike3.matrix = new Matrix4(bodyMatrix);
+    // topSpike3.matrix.translate(0.25, 0.7, 0.4);
+    // topSpike3.matrix.scale(0.25,0.15, 0.25);
+    // topSpike3.renderFast();
 
-    let smile = new Pyramid();
-    smile.color = [1, 1, 1, 1];
-    smile.matrix = new Matrix4(bodyMatrix);
-    smile.matrix.translate(0.1, 0.3, -0.01);
-    smile.matrix.scale(0.5, 0.15, -0.01);
-    smile.matrix.rotate(180, 180, 0, 1);
-    smile.render();
+    // let smile = new Pyramid();
+    // smile.color = [1, 1, 1, 1];
+    // smile.matrix = new Matrix4(bodyMatrix);
+    // smile.matrix.translate(0.1, 0.3, -0.01);
+    // smile.matrix.scale(0.5, 0.15, -0.01);
+    // smile.matrix.rotate(180, 180, 0, 1);
+    // smile.renderFast();
 
     let rightArmMat;
     let leftArmMat;
@@ -419,7 +419,7 @@ function renderAllShapes() {
     rightArm.matrix.rotate(-g_armAngle, 0, 0, 1);
     rightArmMat = new Matrix4(rightArm.matrix);
     rightArm.matrix.scale(0.25, -0.2, 0.25);
-    rightArm.render();
+    rightArm.renderFast();
 
     let leftArm = new Cube();
     leftArm.color = purple;
@@ -428,7 +428,7 @@ function renderAllShapes() {
     leftArm.matrix.rotate(g_armAngle, 0, 0, 1);
     leftArmMat = new Matrix4(leftArm.matrix);
     leftArm.matrix.scale(-0.25, -0.2, 0.25);
-    leftArm.render();
+    leftArm.renderFast();
 
     let lowerRightArm = new Cube();
     lowerRightArm.color = purple;
@@ -436,7 +436,7 @@ function renderAllShapes() {
     lowerRightArm.matrix.translate(0.25, -0.2, 0.25);
     lowerRightArm.matrix.rotate(g_lowerArmAngle, 1, 0, 0);
     lowerRightArm.matrix.scale(-0.25, -0.2, -0.25);
-    lowerRightArm.render();
+    lowerRightArm.renderFast();
 
     let lowerLeftArm = new Cube();
     lowerLeftArm.color = purple;
@@ -444,37 +444,37 @@ function renderAllShapes() {
     lowerLeftArm.matrix.translate(0, -0.2, 0.25);
     lowerLeftArm.matrix.rotate(g_lowerArmAngle, 1, 0, 0);
     lowerLeftArm.matrix.scale(-0.25, -0.2, -0.25);
-    lowerLeftArm.render();
+    lowerLeftArm.renderFast();
 
-    let rightEye = new Pyramid();
-    rightEye.color = [1.0, 0.0, 0.0, 1.0];
-    rightEye.matrix = new Matrix4(bodyMatrix);
-    rightEye.matrix.translate(0.7, 0.4, -0.05);
-    rightEye.matrix.scale(0.25, 0.1, 0.05);
-    rightEye.matrix.rotate(90, 0, 0, 1);
-    rightEye.render();
+    // let rightEye = new Pyramid();
+    // rightEye.color = [1.0, 0.0, 0.0, 1.0];
+    // rightEye.matrix = new Matrix4(bodyMatrix);
+    // rightEye.matrix.translate(0.7, 0.4, -0.05);
+    // rightEye.matrix.scale(0.25, 0.1, 0.05);
+    // rightEye.matrix.rotate(90, 0, 0, 1);
+    // rightEye.renderFast();
 
     let rightPupil = new Cube();
     rightPupil.color = [0.0, 0.0, 0.0, 1.0];
     rightPupil.matrix = new Matrix4(bodyMatrix);
     rightPupil.matrix.translate(0.61, 0.42, -0.06);
     rightPupil.matrix.scale(0.03, 0.05, 0.05);
-    rightPupil.render();
+    rightPupil.renderFast();
 
-    let leftEye = new Pyramid();
-    leftEye.color = [1.0, 0.0, 0.0, 1.0];
-    leftEye.matrix = new Matrix4(bodyMatrix);
-    leftEye.matrix.translate(0.05, 0.5, -0.05);
-    leftEye.matrix.scale(0.25, 0.1, 0.05);
-    leftEye.matrix.rotate(-90, 0, 0, 1);
-    leftEye.render();
+    // let leftEye = new Pyramid();
+    // leftEye.color = [1.0, 0.0, 0.0, 1.0];
+    // leftEye.matrix = new Matrix4(bodyMatrix);
+    // leftEye.matrix.translate(0.05, 0.5, -0.05);
+    // leftEye.matrix.scale(0.25, 0.1, 0.05);
+    // leftEye.matrix.rotate(-90, 0, 0, 1);
+    // leftEye.renderFast();
 
     let leftPupil = new Cube();
     leftPupil.color = [0.0, 0.0, 0.0, 1.0];
     leftPupil.matrix = new Matrix4(bodyMatrix);
     leftPupil.matrix.translate(0.1, 0.42, -0.06);
     leftPupil.matrix.scale(0.03, 0.05, 0.05);
-    leftPupil.render();
+    leftPupil.renderFast();
 
     let leftLegMat;
     let leftLeg = new Cube();
@@ -484,7 +484,7 @@ function renderAllShapes() {
     leftLeg.matrix.rotate(g_legAngle, -1, 0, 0);
     leftLegMat = new Matrix4(leftLeg.matrix);   // copy this matrix for the next joint
     leftLeg.matrix.scale(0.25, 0.5, 0.25);
-    leftLeg.render();
+    leftLeg.renderFast();
 
     let rightLegMat;
     let rightLeg = new Cube();
@@ -494,14 +494,14 @@ function renderAllShapes() {
     rightLeg.matrix.rotate(-g_legAngle, -1, 0, 0);
     rightLegMat = new Matrix4(rightLeg.matrix);   // copy this matrix for the next joint
     rightLeg.matrix.scale(0.25, 0.3, 0.25);
-    rightLeg.render();
+    rightLeg.renderFast();
     
-    let tail = new Cone();
-    tail.color = darkPurple;
-    tail.matrix = new Matrix4(bodyMatrix);
-    tail.matrix.translate(0.4, 0.1, 0.7);
-    tail.matrix.scale(1.5, 1.5, 0.6);
-    tail.render();
+    // let tail = new Cone();
+    // tail.color = darkPurple;
+    // tail.matrix = new Matrix4(bodyMatrix);
+    // tail.matrix.translate(0.4, 0.1, 0.7);
+    // tail.matrix.scale(1.5, 1.5, 0.6);
+    // tail.renderFast();
 
 
 }

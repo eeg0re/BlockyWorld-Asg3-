@@ -64,22 +64,29 @@ class Cube{
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
 
         let allVertices = [];
+        let allUVs = [];
 
         // front of cube
         allVertices = allVertices.concat([0,0,0, 1,1,0, 1,0,0]);
         allVertices = allVertices.concat([0,0,0, 0,1,0, 1,1,0]);
+        allUVs = allUVs.concat([0,0, 1,1, 1,0]);
+        allUVs = allUVs.concat([0,0, 0,1, 1,1]);
         //drawTriangle3DUV([0,0,0, 1,1,0, 1,0,0], [0,0, 1,1, 1,0]);
         //drawTriangle3DUV([0,0,0, 0,1,0, 1,1,0], [0,0, 0,1, 1,1]);
 
         // top of cube
         allVertices = allVertices.concat([0,1,0, 0,1,1, 1,1,1]);
         allVertices = allVertices.concat([0,1,0, 1,1,1, 1,1,0]);
+        allUVs = allUVs.concat([0,1, 0,0, 1,0]);
+        allUVs = allUVs.concat([0,1, 1,0, 1,1]);
         // drawTriangle3DUV([0,1,0, 0,1,1, 1,1,1], [0,1, 0,0, 1,0]);
         // drawTriangle3DUV([0,1,0, 1,1,1, 1,1,0], [0,1, 1,0, 1,1]);
 
         // bottom of cube
         allVertices = allVertices.concat([0,0,0, 1,0,0, 1,0,1]);
         allVertices = allVertices.concat([0,0,0, 0,0,1, 1,0,1]);
+        allUVs = allUVs.concat([0,0, 1,0, 1,1]);
+        allUVs = allUVs.concat([0,0, 0,1, 1,1]);
         // drawTriangle3DUV([0,0,0, 1,0,0, 1,0,1], [0,0, 1,0, 1,1]);
         // drawTriangle3DUV([0,0,0, 0,0,1, 1,0,1], [0,0, 0,1, 1,1]);
 
@@ -89,12 +96,16 @@ class Cube{
         // left side of cube
         allVertices = allVertices.concat([0,0,0, 0,1,0, 0,1,1]);
         allVertices = allVertices.concat([0,0,0, 0,0,1, 0,1,1]);
+        allUVs = allUVs.concat([0,0, 0,1, 1,1]);
+        allUVs = allUVs.concat([0,0, 1,0, 1,1]);
         // drawTriangle3DUV([0,0,0, 0,1,0, 0,1,1], [0,0, 0,1, 1,1]);
         // drawTriangle3DUV([0,0,0, 0,0,1, 0,1,1], [0,0, 1,0, 1,1]);
 
         // right side of cube
         allVertices = allVertices.concat([1,0,0, 1,1,0, 1,1,1]);
         allVertices = allVertices.concat([1,0,0, 1,0,1, 1,1,1]);
+        allUVs = allUVs.concat([0,0, 0,1, 1,1]);
+        allUVs = allUVs.concat([0,0, 1,0, 1,1]);
         // drawTriangle3DUV([1,0,0, 1,1,0, 1,1,1], [0,0, 0,1, 1,1]);
         // drawTriangle3DUV([1,0,0, 1,0,1, 1,1,1], [0,0, 1,0, 1,1]);
 
@@ -103,9 +114,12 @@ class Cube{
 
         // back of cube
         allVertices = allVertices.concat([0,0,1, 1,0,1, 1,1,1]);
-        allVertices = allVertices.concat([0,0,1, 1,0,1, 1,1,1]);
+        allVertices = allVertices.concat([0,0,1, 0,1,1, 1,1,1]);
+        allUVs = allUVs.concat([0,0, 1,0, 1,1]);
+        allUVs = allUVs.concat([0,0, 0,1, 1,1]);
         // drawTriangle3DUV([0,0,1, 1,0,1, 1,1,1], [0,0, 1,0, 1,1]);
         // drawTriangle3DUV([0,0,1, 0,1,1, 1,1,1], [0,0, 0,1, 1,1]);
-        drawTriangle3D(allVertices)
+        //console.log(allVertices);
+        drawTriangle3DUV(allVertices, allUVs);
     }
 }
