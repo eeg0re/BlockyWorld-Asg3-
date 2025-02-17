@@ -321,6 +321,9 @@ function sendImageToTexture(image, numTexture){
     gl.activeTexture(glTex);                                              // enable texture unit0
     gl.bindTexture(gl.TEXTURE_2D, texture);                                     // bind texture object to target
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);          // set texture parameters
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);   // set texture image to the image we passed in 
     gl.uniform1i(samplerVar, numTexture);                                                // pass the texure unit 0 to u_sampler0
     console.log("texture loaded");
