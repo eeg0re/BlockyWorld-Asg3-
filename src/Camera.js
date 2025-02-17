@@ -49,24 +49,6 @@ class Camera {
         this.at = this.at.add(d);
     }
 
-    /* 
---------- movement psuedocode ------------
---- up will have to be taken into account if we give user control of up/down camera movement
-
-    ---- rotate camera ----
-    rotate - {
-        let d = new Vector3();
-        d = at.sub(eye);
-        d.normalize();
-        let r = sqrt (d.x ^2 + d.z ^2);
-        let theta = atan2(d.z, d.x);
-        theta += 0.1; // probably in radians, so adjust accordingly 
-        let newx = r * cos(theta);
-        let newz = r * sin(theta);
-        d = new Vector3([newx, d.y, newz]);
-        at = eye.add(d);
-    }
-*/
     rotateRight(degrees = 5){
         let d = new Vector3();
         d.set(this.at);
@@ -87,9 +69,6 @@ class Camera {
 
         this.at.set(this.eye); 
         this.at.add(d);
-        console.log("AT: ", this.at);
-        console.log("EYE: ", this.eye);
-        console.log("D: ", d);
     }
 
     rotateLeft(degrees = 5){
@@ -112,8 +91,5 @@ class Camera {
 
         this.at.set(this.eye); 
         this.at.add(d);
-        console.log("AT: ", this.at);
-        console.log("EYE: ", this.eye);
-        console.log("D: ", d);
     }
 }

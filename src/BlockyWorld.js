@@ -21,6 +21,15 @@ var FSHADER_SOURCE = `
   uniform vec4 u_FragColor;
   varying vec2 v_UV;
   uniform sampler2D u_sampler0;
+  uniform sampler2D u_sampler1;
+  uniform sampler2D u_sampler2;
+  uniform sampler2D u_sampler3;
+  uniform sampler2D u_sampler4;
+  uniform sampler2D u_sampler5;
+  uniform sampler2D u_sampler6;
+  uniform sampler2D u_sampler7;
+  uniform sampler2D u_sampler8;
+  uniform sampler2D u_sampler9;
   uniform int u_whichTexture;
   void main() {
     if (u_whichTexture == -2){
@@ -29,7 +38,34 @@ var FSHADER_SOURCE = `
         gl_FragColor = vec4(v_UV, 1.0, 1.0);
     } else if (u_whichTexture == 0){            // use texture 0
         gl_FragColor = texture2D(u_sampler0, v_UV);
-    } else {                                    // error, use red
+    } else if (u_whichTexture == 1){            // use texture 1
+        gl_FragColor = texture2D(u_sampler1, v_UV);
+    }
+    else if (u_whichTexture == 2){            // use texture 2
+        gl_FragColor = texture2D(u_sampler2, v_UV);
+    }
+    else if (u_whichTexture == 3){            // use texture 3
+        gl_FragColor = texture2D(u_sampler3, v_UV);
+    }
+    else if (u_whichTexture == 4){            // use texture 4
+        gl_FragColor = texture2D(u_sampler4, v_UV);
+    }
+    else if (u_whichTexture == 5){            // use texture 5
+        gl_FragColor = texture2D(u_sampler5, v_UV);
+    }
+    else if (u_whichTexture == 6){            // use texture 6
+        gl_FragColor = texture2D(u_sampler6, v_UV);
+    }
+    else if (u_whichTexture == 7){            // use texture 7
+        gl_FragColor = texture2D(u_sampler7, v_UV);
+    }
+    else if (u_whichTexture == 8){            // use texture 8
+        gl_FragColor = texture2D(u_sampler8, v_UV);
+    }
+    else if (u_whichTexture == 9){            // use texture 9
+        gl_FragColor = texture2D(u_sampler9, v_UV);
+    }
+    else {                                    // error, use red
         gl_FragColor = vec4(1.0, 0.2, 0.2, 1.0);
     }
   }`;
@@ -51,6 +87,15 @@ let u_ViewMatrix;
 let u_ProjectionMatrix;
 let u_whichTexture;
 let u_sampler0;
+let u_sampler1;
+let u_sampler2;
+let u_sampler3;
+let u_sampler4;
+let u_sampler5;
+let u_sampler6;
+let u_sampler7;
+let u_sampler8;
+let u_sampler9;
 
 // UI variables
 let g_selectedSize = 10; 
@@ -153,7 +198,51 @@ function connectVariablesToGLSL() {
         console.log("Failed to get the storage location of u_sampler0");
         return false;
     }
-
+    u_sampler1 = gl.getUniformLocation(gl.program, 'u_sampler1');
+    if(!u_sampler1){
+        console.log("Failed to get the storage location of u_sampler1");
+        return false;
+    }
+    u_sampler2 = gl.getUniformLocation(gl.program, 'u_sampler2');
+    if(!u_sampler2){
+        console.log("Failed to get the storage location of u_sampler2");
+        return false;
+    }
+    u_sampler3 = gl.getUniformLocation(gl.program, 'u_sampler3');
+    if(!u_sampler3){
+        console.log("Failed to get the storage location of u_sampler3");
+        return false;
+    }
+    u_sampler4 = gl.getUniformLocation(gl.program, 'u_sampler4');
+    if(!u_sampler4){
+        console.log("Failed to get the storage location of u_sampler4");
+        return false;
+    }
+    u_sampler5 = gl.getUniformLocation(gl.program, 'u_sampler5');
+    if(!u_sampler5){
+        console.log("Failed to get the storage location of u_sampler5");
+        return false;
+    }
+    u_sampler6 = gl.getUniformLocation(gl.program, 'u_sampler6');
+    if(!u_sampler6){
+        console.log("Failed to get the storage location of u_sampler6");
+        return false;
+    }
+    u_sampler7 = gl.getUniformLocation(gl.program, 'u_sampler7');
+    if(!u_sampler7){
+        console.log("Failed to get the storage location of u_sampler7");
+        return false;
+    }
+    u_sampler8 = gl.getUniformLocation(gl.program, 'u_sampler8');
+    if(!u_sampler8){
+        console.log("Failed to get the storage location of u_sampler8");
+        return false;
+    }
+    u_sampler9 = gl.getUniformLocation(gl.program, 'u_sampler9');
+    if(!u_sampler9){
+        console.log("Failed to get the storage location of u_sampler9");
+        return false;
+    }
     u_whichTexture = gl.getUniformLocation(gl.program, 'u_whichTexture');
     if(!u_whichTexture){
         console.log("Failed to get the storage location of u_whichTexture");
@@ -263,11 +352,9 @@ function keyDown(ev){
             camera.right();
             break;
         case 69: //e
-            console.log("rotating right");
             camera.rotateRight(5);
             break;
         case 81: //q
-            console.log("rotating left");
             camera.rotateLeft(5);
             break;
         default:
@@ -311,17 +398,33 @@ let worldMap = [
     [1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1]
 ];
 
+function generateMap(map){
+    for(let x = 0; x < worldMap.length; x++){
+        for(let y = 0; y < worldMap[x].length; y++){
+            map[x][y] = Math.floor(Math.random() * 5);
+            if(x == 0 || x == worldMap.length - 1 || y == 0 || y == worldMap[x].length - 1){
+                map[x][y] = 1;
+            }
+            if((x == 4 && y == 4) || (x == 4 && y == 5) || (x == 5 && y == 4) || (x == 5 && y == 5)){
+                map[x][y] = 0;
+            }
+        }
+    }
+}
+
+function drawCube(x, y, z, texNum){
+    let cube = new Cube();
+    cube.color = [0.5, 0.5, 0.5, 1.0];
+    cube.textureNum = texNum;
+    cube.matrix.translate(x, y, z);
+    cube.renderFast();
+}
+
 function drawMap(){
     for (let x = 0; x < worldMap.length; x++){
         for(let y = 0; y < worldMap[x].length; y++){
-           if(worldMap[x][y] > 0){
-                for(let i = 0; i < worldMap[x][y]; i++){
-                    let cube = new Cube();
-                    cube.color = [0.5, 0.5, 0.5, 1.0];
-                    cube.textureNum = -2;
-                    cube.matrix.translate(x-4, -0.75 + i, y-4);
-                    cube.renderFast();
-                }
+            for(let i = 0; i < worldMap[x][y]; i++){
+                drawCube(x-4, -0.75 + i, y-4, 1);
             }
         }
     }
@@ -336,8 +439,6 @@ function renderAllShapes() {
     gl.uniformMatrix4fv(u_ProjectionMatrix, false, projMat.elements);
 
     let viewMat = new Matrix4();
-    //viewMat.setLookAt(eyeVector.elements[0], eyeVector.elements[1], eyeVector.elements[2], atVector.elements[0], atVector.elements[1], atVector.elements[2], upVector.elements[0], upVector.elements[1], upVector.elements[2]);    // (eye, at, up)
-                                                  // eye_x + moves right, eye_z + moves back
     viewMat.setLookAt(camera.eye.elements[0], camera.eye.elements[1], camera.eye.elements[2], camera.at.elements[0], camera.at.elements[1], camera.at.elements[2], camera.up.elements[0],  camera.up.elements[1],  camera.up.elements[2]);
     gl.uniformMatrix4fv(u_ViewMatrix, false, viewMat.elements);
 
@@ -358,7 +459,7 @@ function renderAllShapes() {
     let sky = new Cube();
     sky.color = [0.1, 0.4, 1.0, 1.0];
     sky.textureNum = -2;
-    sky.matrix.scale(50,50,50);
+    sky.matrix.scale(100,100,100);
     sky.matrix.translate(-0.5, -0.5, -0.5);
     sky.renderFast();
 
@@ -533,16 +634,10 @@ function updateColor(){
 }
 
 function setupHTMLElements(){
-   
     // sliders
     document.getElementById("angleSliderX").addEventListener("mousemove", function () { g_globalAngleX = this.value; renderAllShapes(); } );
     document.getElementById("angleSliderY").addEventListener("mousemove", function () { g_globalAngleY = this.value; renderAllShapes(); } );
-    document.getElementById("armSlider").addEventListener("mousemove", function () { g_armAngle = this.value; renderAllShapes(); } );
-    document.getElementById("lowerArmSlider").addEventListener("mousemove", function () { g_lowerArmAngle = this.value; renderAllShapes(); } );
-    document.getElementById("legSlider").addEventListener("mousemove", function () { g_legAngle = this.value; renderAllShapes(); } );
-
-    // Buttons 
-
+    
 }
 
 let g_startTime = performance.now()/1000.0;
@@ -564,6 +659,8 @@ function main() {
     setupHTMLElements();
 
     initTextures(0, 'sky.jpg');
+    initTextures(1, 'mossBrick.jpeg');
+    initTextures(2, 'grass.jpeg');
 
     // Specify the color for clearing <canvas>
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -572,6 +669,8 @@ function main() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     document.onkeydown = keyDown;
+
+    //generateMap(worldMap);
 
     renderAllShapes();
     requestAnimationFrame(tick);
