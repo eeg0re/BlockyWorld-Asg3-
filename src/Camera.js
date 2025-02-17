@@ -57,20 +57,35 @@ class Camera {
         at = eye.add(d);
     }
 */
-    rotateRight(){
+    rotateRight(degrees = 1){
         let d = new Vector3();
         d = this.at.sub(this.eye);
+        d.elements[1] = 0;
         d.normalize();
-        let r = Math.sqrt(d.elements[0] ** 2 + d.elements[2] ** 2); // let r = sqrt (d.x ^2 + d.z ^2);
-        let theta = Math.atan2(d.elements[2], d.elements[0]); // let theta = atan2(d.z, d.x);
-        //theta += 0.1; // probably in radians, so adjust accordingly
+        let r = d.magnitude();
+        let theta = Math.atan2(d.elements[0], d.elements[2]); // let theta = atan2(d.z, d.x);
+        let radians = -degrees * (Math.PI / 180);
+        theta = theta + radians;
+        let newx = r * Math.sin(theta); 
+        let newz = r * Math.cos(theta); 
+        d = new Vector3([newx, d.elements[1], newz]); 
+        this.at = this.eye.add(d);
+        console.log(this.at);
+    }
+
+    rotateLeft(degrees = 5){
+        let d = new Vector3();
+        d = this.at.sub(this.eye);
+        d.elements[1] = 0;
+        d.normalize();
+        let r = d.magnitude();
+        let theta = Math.atan2(d.elements[2], d.elements[0]); 
+        let radians = -degrees * (Math.PI / 180);
+        theta = theta + radians;
         let newx = r * Math.cos(theta); 
         let newz = r * Math.sin(theta); 
         d = new Vector3([newx, d.elements[1], newz]); 
         this.at = this.eye.add(d);
+        console.log(this.at);
     }
-
-    // rotateLeft(){
-    
-    // }
 }
