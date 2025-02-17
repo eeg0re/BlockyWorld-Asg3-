@@ -13,7 +13,8 @@ class Camera {
 
     forward(){
         let d = new Vector3();
-        d = this.at.sub(this.eye);
+        d.set(this.at);
+        d.sub(this.eye);
         d.normalize();
         this.eye = this.eye.add(d);
         this.at = this.at.add(d);
@@ -21,7 +22,8 @@ class Camera {
 
     back(){
         let d = new Vector3();
-        d = this.at.sub(this.eye);
+        d.set(this.at);
+        d.sub(this.eye);
         d.normalize();
         this.eye = this.eye.sub(d);
         this.at = this.at.sub(d);
@@ -29,7 +31,8 @@ class Camera {
 
     left(){
         let d = new Vector3();
-        d = this.at.sub(this.eye);
+        d.set(this.at);
+        d.sub(this.eye);
         d = Vector3.cross(d, this.up);
         d.normalize();
         this.eye = this.eye.sub(d);
@@ -38,7 +41,8 @@ class Camera {
 
     right(){
         let d = new Vector3();
-        d = this.at.sub(this.eye);
+        d.set(this.at);
+        d.sub(this.eye);
         d = Vector3.cross(d, this.up);
         d.normalize();
         this.eye = this.eye.add(d);
