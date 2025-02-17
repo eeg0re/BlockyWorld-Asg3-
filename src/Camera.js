@@ -1,8 +1,14 @@
 class Camera {
-    constructor(){
+    constructor(width, height){
         this.eye = new Vector3([0.0, 0.0, 3.0]);
         this.at = new Vector3([0.0, 0.0, -100.0]);
         this.up = new Vector3([0.0, 1.0, 0.0]);
+        this.fov = 60.0;
+        this.viewMatrix = new Matrix4();
+        this.projectionMatrix = new Matrix4();
+
+        this.viewMatrix.setLookAt(this.eye.elements[0], this.eye.elements[1], this.eye.elements[2], this.at.elements[0], this.at.elements[1], this.at.elements[2], this.up.elements[0], this.up.elements[1], this.up.elements[2]);
+        this.projectionMatrix.setPerspective(this.fov, width/height, 0.1, 1000);
     }
 
     forward(){
@@ -57,35 +63,53 @@ class Camera {
         at = eye.add(d);
     }
 */
-    rotateRight(degrees = 1){
+    rotateRight(degrees = 5){
         let d = new Vector3();
-        d = this.at.sub(this.eye);
+        d.set(this.at);
+        d.sub(this.eye);
         d.elements[1] = 0;
-        d.normalize();
+
         let r = d.magnitude();
-        let theta = Math.atan2(d.elements[0], d.elements[2]); // let theta = atan2(d.z, d.x);
-        let radians = -degrees * (Math.PI / 180);
+        d.normalize();
+        
+        let theta = Math.atan2(d.elements[2], d.elements[0]); // let theta = atan2(d.z, d.x);
+        let radians = degrees * (Math.PI / 180);
         theta = theta + radians;
-        let newx = r * Math.sin(theta); 
-        let newz = r * Math.cos(theta); 
-        d = new Vector3([newx, d.elements[1], newz]); 
-        this.at = this.eye.add(d);
-        console.log(this.at);
+
+        let newx = r * Math.cos(theta); 
+        let newz = r * Math.sin(theta); 
+        d.elements[0] = newx;
+        d.elements[2] = newz;
+
+        this.at.set(this.eye); 
+        this.at.add(d);
+        console.log("AT: ", this.at);
+        console.log("EYE: ", this.eye);
+        console.log("D: ", d);
     }
 
     rotateLeft(degrees = 5){
         let d = new Vector3();
-        d = this.at.sub(this.eye);
+        d.set(this.at);
+        d.sub(this.eye);
         d.elements[1] = 0;
-        d.normalize();
+
         let r = d.magnitude();
-        let theta = Math.atan2(d.elements[2], d.elements[0]); 
+        d.normalize();
+        
+        let theta = Math.atan2(d.elements[2], d.elements[0]); // let theta = atan2(d.z, d.x);
         let radians = -degrees * (Math.PI / 180);
         theta = theta + radians;
+
         let newx = r * Math.cos(theta); 
         let newz = r * Math.sin(theta); 
-        d = new Vector3([newx, d.elements[1], newz]); 
-        this.at = this.eye.add(d);
-        console.log(this.at);
+        d.elements[0] = newx;
+        d.elements[2] = newz;
+
+        this.at.set(this.eye); 
+        this.at.add(d);
+        console.log("AT: ", this.at);
+        console.log("EYE: ", this.eye);
+        console.log("D: ", d);
     }
 }

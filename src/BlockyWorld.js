@@ -38,7 +38,7 @@ const POINT = 0;
 const TRIANGLE = 1;
 const CIRCLE = 2;
 
-let canvas;
+let  canvas = document.getElementById("webgl");
 let gl;
 
 // shader variables used to pass JS info to WebGL
@@ -75,7 +75,7 @@ let darkPurple = [0.314 * 0.8, 0.0 * 0.8, 0.78 *0.8, 1.0];
 
 function setupWebGL() {
     // Retrieve <canvas> element
-    canvas = document.getElementById("webgl");
+    // canvas = document.getElementById("webgl");
 
     // Get the rendering context for WebGL
     gl = canvas.getContext("webgl", { preserveDrawingBuffer: true });
@@ -245,7 +245,8 @@ function updateAnimationAngles(){
     }
 }
 
-let camera = new Camera();
+let camera = new Camera(canvas.width, canvas.height);
+
 function keyDown(ev){
     let key = ev.keyCode;
     switch(key){
@@ -263,11 +264,11 @@ function keyDown(ev){
             break;
         case 69: //e
             console.log("rotating right");
-            camera.rotateRight();
+            camera.rotateRight(5);
             break;
         case 81: //q
             console.log("rotating left");
-            camera.rotateLeft();
+            camera.rotateLeft(5);
             break;
         default:
             console.log(ev.keyCode);
