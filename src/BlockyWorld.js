@@ -370,7 +370,7 @@ function renderAllShapes() {
     // rightEar.matrix.translate(0.0, 0.7, 0.4);
     // rightEar.matrix.rotate(45, 50, -40, 0);
     // rightEar.matrix.scale(0.5, 0.7, 0.5);
-    // rightEar.renderFast();
+    // rightEar.render();
 
     // let leftEar = new Pyramid();
     // leftEar.color = purple;
@@ -378,28 +378,28 @@ function renderAllShapes() {
     // leftEar.matrix.translate(0.3, 0.7, 0.6);
     // leftEar.matrix.rotate(55, 70, 30, 0);
     // leftEar.matrix.scale(0.5, 0.7, 0.5);
-    // leftEar.renderFast();
+    // leftEar.render();
 
     // let topSpike1 = new Pyramid();
     // topSpike1.color = darkPurple;
     // topSpike1.matrix = new Matrix4(bodyMatrix);
     // topSpike1.matrix.translate(0.15, 0.7, 0.5);
     // topSpike1.matrix.scale(0.25,0.15, 0.25);
-    // topSpike1.renderFast();
+    // topSpike1.render();
 
     // let topSpike2 = new Pyramid();
     // topSpike2.color = darkPurple;
     // topSpike2.matrix = new Matrix4(bodyMatrix);
     // topSpike2.matrix.translate(0.35, 0.7, 0.5);
     // topSpike2.matrix.scale(0.25,0.15, 0.25);
-    // topSpike2.renderFast();
+    // topSpike2.render();
 
     // let topSpike3 = new Pyramid();
     // topSpike3.color = darkPurple;
     // topSpike3.matrix = new Matrix4(bodyMatrix);
     // topSpike3.matrix.translate(0.25, 0.7, 0.4);
     // topSpike3.matrix.scale(0.25,0.15, 0.25);
-    // topSpike3.renderFast();
+    // topSpike3.render();
 
     // let smile = new Pyramid();
     // smile.color = [1, 1, 1, 1];
@@ -407,7 +407,7 @@ function renderAllShapes() {
     // smile.matrix.translate(0.1, 0.3, -0.01);
     // smile.matrix.scale(0.5, 0.15, -0.01);
     // smile.matrix.rotate(180, 180, 0, 1);
-    // smile.renderFast();
+    // smile.render();
 
     let rightArmMat;
     let leftArmMat;

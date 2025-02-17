@@ -58,7 +58,7 @@ class Cube{
         let rgba = this.color;
 
         // accomodate for textures later
-        //gl.uniform1i(u_whichTexture, this.textureNum);
+        gl.uniform1i(u_whichTexture, this.textureNum);
         gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
 
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
@@ -71,55 +71,37 @@ class Cube{
         allVertices = allVertices.concat([0,0,0, 0,1,0, 1,1,0]);
         allUVs = allUVs.concat([0,0, 1,1, 1,0]);
         allUVs = allUVs.concat([0,0, 0,1, 1,1]);
-        //drawTriangle3DUV([0,0,0, 1,1,0, 1,0,0], [0,0, 1,1, 1,0]);
-        //drawTriangle3DUV([0,0,0, 0,1,0, 1,1,0], [0,0, 0,1, 1,1]);
 
         // top of cube
         allVertices = allVertices.concat([0,1,0, 0,1,1, 1,1,1]);
         allVertices = allVertices.concat([0,1,0, 1,1,1, 1,1,0]);
         allUVs = allUVs.concat([0,1, 0,0, 1,0]);
         allUVs = allUVs.concat([0,1, 1,0, 1,1]);
-        // drawTriangle3DUV([0,1,0, 0,1,1, 1,1,1], [0,1, 0,0, 1,0]);
-        // drawTriangle3DUV([0,1,0, 1,1,1, 1,1,0], [0,1, 1,0, 1,1]);
 
         // bottom of cube
         allVertices = allVertices.concat([0,0,0, 1,0,0, 1,0,1]);
         allVertices = allVertices.concat([0,0,0, 0,0,1, 1,0,1]);
         allUVs = allUVs.concat([0,0, 1,0, 1,1]);
         allUVs = allUVs.concat([0,0, 0,1, 1,1]);
-        // drawTriangle3DUV([0,0,0, 1,0,0, 1,0,1], [0,0, 1,0, 1,1]);
-        // drawTriangle3DUV([0,0,0, 0,0,1, 1,0,1], [0,0, 0,1, 1,1]);
-
-        // // shaded color
-        // gl.uniform4f(u_FragColor, rgba[0] * 0.8, rgba[1] * 0.8, rgba[2] * 0.8, rgba[3]);
 
         // left side of cube
         allVertices = allVertices.concat([0,0,0, 0,1,0, 0,1,1]);
         allVertices = allVertices.concat([0,0,0, 0,0,1, 0,1,1]);
         allUVs = allUVs.concat([0,0, 0,1, 1,1]);
         allUVs = allUVs.concat([0,0, 1,0, 1,1]);
-        // drawTriangle3DUV([0,0,0, 0,1,0, 0,1,1], [0,0, 0,1, 1,1]);
-        // drawTriangle3DUV([0,0,0, 0,0,1, 0,1,1], [0,0, 1,0, 1,1]);
 
         // right side of cube
         allVertices = allVertices.concat([1,0,0, 1,1,0, 1,1,1]);
         allVertices = allVertices.concat([1,0,0, 1,0,1, 1,1,1]);
         allUVs = allUVs.concat([0,0, 0,1, 1,1]);
         allUVs = allUVs.concat([0,0, 1,0, 1,1]);
-        // drawTriangle3DUV([1,0,0, 1,1,0, 1,1,1], [0,0, 0,1, 1,1]);
-        // drawTriangle3DUV([1,0,0, 1,0,1, 1,1,1], [0,0, 1,0, 1,1]);
-
-        // darker shaded color
-        // gl.uniform4f(u_FragColor, rgba[0] * 0.7, rgba[1] * 0.7, rgba[2] * 0.7, rgba[3]);
 
         // back of cube
         allVertices = allVertices.concat([0,0,1, 1,0,1, 1,1,1]);
         allVertices = allVertices.concat([0,0,1, 0,1,1, 1,1,1]);
         allUVs = allUVs.concat([0,0, 1,0, 1,1]);
         allUVs = allUVs.concat([0,0, 0,1, 1,1]);
-        // drawTriangle3DUV([0,0,1, 1,0,1, 1,1,1], [0,0, 1,0, 1,1]);
-        // drawTriangle3DUV([0,0,1, 0,1,1, 1,1,1], [0,0, 0,1, 1,1]);
-        //console.log(allVertices);
+
         drawTriangle3DUV(allVertices, allUVs);
     }
 }
