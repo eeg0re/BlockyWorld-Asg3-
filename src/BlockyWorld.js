@@ -404,13 +404,13 @@ let worldMap = [
 function generateMap(map){
     for(let x = 0; x < worldMap.length; x++){
         for(let y = 0; y < worldMap[x].length; y++){
-            map[x][y] = Math.floor(Math.random() * 5);
+            //map[x][y] = Math.floor(Math.random() * 5);
             if(x == 0 || x == worldMap.length - 1 || y == 0 || y == worldMap[x].length - 1){
-                map[x][y] = 1;
+                map[x][y] = map[x][y] = Math.floor(Math.random() * 5);;
             }
-            if((x == 4 && y == 4) || (x == 4 && y == 5) || (x == 5 && y == 4) || (x == 5 && y == 5)){
-                map[x][y] = 0;
-            }
+            // if((x == 4 && y == 4) || (x == 4 && y == 5) || (x == 5 && y == 4) || (x == 5 && y == 5)){
+            //     map[x][y] = 0;
+            // }
         }
     }
 }
@@ -453,7 +453,7 @@ function renderAllShapes() {
 
     let floor = new Cube();
     floor.color = [0.0, 1.0, 0.0, 1.0];
-    floor.textureNum = -2;
+    floor.textureNum = 3;
     floor.matrix.translate(0.0, -0.7501, 0.0);
     floor.matrix.scale(64, 0, 64);
     floor.matrix.translate(-0.5, 0.0, -0.5);
@@ -475,51 +475,6 @@ function renderAllShapes() {
     body.matrix.scale(0.75, 0.75, 0.75);
     body.textureNum = 0;
     body.renderFast();
-
-    // let rightEar = new Pyramid();
-    // rightEar.color = purple;
-    // rightEar.matrix = new Matrix4(bodyMatrix);
-    // rightEar.matrix.translate(0.0, 0.7, 0.4);
-    // rightEar.matrix.rotate(45, 50, -40, 0);
-    // rightEar.matrix.scale(0.5, 0.7, 0.5);
-    // rightEar.render();
-
-    // let leftEar = new Pyramid();
-    // leftEar.color = purple;
-    // leftEar.matrix = new Matrix4(bodyMatrix);
-    // leftEar.matrix.translate(0.3, 0.7, 0.6);
-    // leftEar.matrix.rotate(55, 70, 30, 0);
-    // leftEar.matrix.scale(0.5, 0.7, 0.5);
-    // leftEar.render();
-
-    // let topSpike1 = new Pyramid();
-    // topSpike1.color = darkPurple;
-    // topSpike1.matrix = new Matrix4(bodyMatrix);
-    // topSpike1.matrix.translate(0.15, 0.7, 0.5);
-    // topSpike1.matrix.scale(0.25,0.15, 0.25);
-    // topSpike1.render();
-
-    // let topSpike2 = new Pyramid();
-    // topSpike2.color = darkPurple;
-    // topSpike2.matrix = new Matrix4(bodyMatrix);
-    // topSpike2.matrix.translate(0.35, 0.7, 0.5);
-    // topSpike2.matrix.scale(0.25,0.15, 0.25);
-    // topSpike2.render();
-
-    // let topSpike3 = new Pyramid();
-    // topSpike3.color = darkPurple;
-    // topSpike3.matrix = new Matrix4(bodyMatrix);
-    // topSpike3.matrix.translate(0.25, 0.7, 0.4);
-    // topSpike3.matrix.scale(0.25,0.15, 0.25);
-    // topSpike3.render();
-
-    // let smile = new Pyramid();
-    // smile.color = [1, 1, 1, 1];
-    // smile.matrix = new Matrix4(bodyMatrix);
-    // smile.matrix.translate(0.1, 0.3, -0.01);
-    // smile.matrix.scale(0.5, 0.15, -0.01);
-    // smile.matrix.rotate(180, 180, 0, 1);
-    // smile.render();
 
     let rightArmMat;
     let leftArmMat;
@@ -558,28 +513,12 @@ function renderAllShapes() {
     lowerLeftArm.matrix.scale(-0.25, -0.2, -0.25);
     lowerLeftArm.renderFast();
 
-    // let rightEye = new Pyramid();
-    // rightEye.color = [1.0, 0.0, 0.0, 1.0];
-    // rightEye.matrix = new Matrix4(bodyMatrix);
-    // rightEye.matrix.translate(0.7, 0.4, -0.05);
-    // rightEye.matrix.scale(0.25, 0.1, 0.05);
-    // rightEye.matrix.rotate(90, 0, 0, 1);
-    // rightEye.renderFast();
-
     let rightPupil = new Cube();
     rightPupil.color = [0.0, 0.0, 0.0, 1.0];
     rightPupil.matrix = new Matrix4(bodyMatrix);
     rightPupil.matrix.translate(0.61, 0.42, -0.06);
     rightPupil.matrix.scale(0.03, 0.05, 0.05);
     rightPupil.renderFast();
-
-    // let leftEye = new Pyramid();
-    // leftEye.color = [1.0, 0.0, 0.0, 1.0];
-    // leftEye.matrix = new Matrix4(bodyMatrix);
-    // leftEye.matrix.translate(0.05, 0.5, -0.05);
-    // leftEye.matrix.scale(0.25, 0.1, 0.05);
-    // leftEye.matrix.rotate(-90, 0, 0, 1);
-    // leftEye.renderFast();
 
     let leftPupil = new Cube();
     leftPupil.color = [0.0, 0.0, 0.0, 1.0];
@@ -608,14 +547,6 @@ function renderAllShapes() {
     rightLeg.matrix.scale(0.25, 0.3, 0.25);
     rightLeg.renderFast();
     
-    // let tail = new Cone();
-    // tail.color = darkPurple;
-    // tail.matrix = new Matrix4(bodyMatrix);
-    // tail.matrix.translate(0.4, 0.1, 0.7);
-    // tail.matrix.scale(1.5, 1.5, 0.6);
-    // tail.renderFast();
-
-
 }
 
 function convertCoords(ev) {
@@ -664,6 +595,7 @@ function main() {
     initTextures(0, 'sky.jpg');
     initTextures(1, 'mossBrick.jpeg');
     initTextures(2, 'grass.jpeg');
+    initTextures(3, 'topGrass.jpg')
 
     // Specify the color for clearing <canvas>
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -673,7 +605,7 @@ function main() {
 
     document.onkeydown = keyDown;
 
-    //generateMap(worldMap);
+    generateMap(worldMap);
 
     renderAllShapes();
     requestAnimationFrame(tick);
